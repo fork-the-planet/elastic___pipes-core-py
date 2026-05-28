@@ -351,8 +351,8 @@ def walk_config_nodes(pipes, prefix):
 
     for pipe, config in pipes:
         for node, _type, help, notes, default, empty in walk_params(pipe):
-            if isinstance(node, Pipe.Config):
-                indirect = node.node
+            if isinstance(node, Pipe.Config) and node.indirect:
+                indirect = node.node if node.indirect is True else node.indirect
                 if arg_name := _get_name(config, indirect):
                     yield pipe, "config", node, help, notes, _type, indirect, arg_name
             elif isinstance(node, Pipe.State) and node.indirect:
